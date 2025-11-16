@@ -59,7 +59,7 @@ var, cvar = calculate_risk_metrics(pnl, confidence_level)
 
 # Metrics
 st.subheader("Key Risk Metrics")
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4 = st.columns(5)
 
 with col1:
     st.metric(label=f"VaR ({confidence_level}%, {time_horizon}d)", value=f"${abs(var):.2f}M", delta=f"{(var/portfolio_value)*100:.2f}%", delta_color="inverse")
@@ -73,6 +73,10 @@ with col3:
 with col4:
     expected_return = np.mean(pnl)
     st.metric(label=f"Expected P&L ({time_horizon}d)", value=f"${expected_return:.2f}M")
+
+with col5:
+    drift_annual = 0.0 
+    st.metric(label="Annualized Drift", value=f"{drift_annual*100:.1f}%", delta="Assumed Mean Return")
 
 # Tabs
 tab1, tab2, tab3 = st.tabs(["📊 Portfolio", "📉 P&L Distribution", "🎯 VaR Analysis"])
