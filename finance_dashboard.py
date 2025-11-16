@@ -83,7 +83,6 @@ with col4:
     st.metric(label=f"Expected P&L ({time_horizon}d)", value=f"${expected_return:.2f}M")
 
 with col5:
-    with col5:
     st.metric(label="Annualized Drift", value=f"{annual_drift*100:.1f}%", delta="User-Defined Return")
 
 # Tabs
