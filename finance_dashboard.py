@@ -32,7 +32,7 @@ def generate_portfolio_data(n_assets=5):
 # Monte Carlo simulation
 @st.cache_data
 def run_monte_carlo(portfolio_val, volatility, n_sims, days, drift):
-   np.random.seed(42)
+    np.random.seed(42)
     daily_returns = np.random.normal(loc=0, scale=volatility / np.sqrt(252), size=(n_sims, days))
     # CHANGE 'loc=0' to use the drift:
     daily_drift = drift / 252 # Convert annual drift to daily drift
