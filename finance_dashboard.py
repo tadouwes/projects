@@ -16,6 +16,7 @@ portfolio_value = st.sidebar.number_input("Portfolio Value ($M)", min_value=1.0,
 confidence_level = st.sidebar.slider("VaR Confidence Level (%)", min_value=90, max_value=99, value=95)
 time_horizon = st.sidebar.slider("Time Horizon (days)", min_value=1, max_value=252, value=10)
 num_simulations = st.sidebar.slider("Monte Carlo Simulations", min_value=1000, max_value=100000, value=10000, step=1000)
+annual_drift = st.sidebar.number_input("Annual Drift (%)", min_value=-10.0, max_value=100.0, value=0.0, step=0.1) / 100
 
 # Generate portfolio data
 @st.cache_data
@@ -30,9 +31,12 @@ def generate_portfolio_data(n_assets=5):
 
 # Monte Carlo simulation
 @st.cache_data
-def run_monte_carlo(portfolio_val, volatility, n_sims, days):
-    np.random.seed(42)
+def run_monte_carlo(portfolio_val, volatility, n_sims, days, drift):
+   np.random.seed(42)
     daily_returns = np.random.normal(loc=0, scale=volatility / np.sqrt(252), size=(n_sims, days))
+    # CHANGE 'loc=0' to use the drift:
+    daily_drift = drift / 252 # Convert annual drift to daily drift
+    daily_returns = np.random.normal(loc=daily_drift, scale=volatility / np.sqrt(252), size=(n_sims, days))
     
     # Calculate paths
     cum_returns = np.cumprod(1 + daily_returns, axis=1)
@@ -52,9 +56,13 @@ def calculate_risk_metrics(pnl, confidence):
     return var, cvar
 
 # Run simulation
+# Run simulation
 portfolio_df = generate_portfolio_data()
 volatility = 0.15
+# CHANGE THIS LINE to include the drift input:
 paths, pnl = run_monte_carlo(portfolio_value, volatility, num_simulations, time_horizon)
+# TO THIS:
+paths, pnl = run_monte_carlo(portfolio_value, volatility, num_simulations, time_horizon, annual_drift) 
 var, cvar = calculate_risk_metrics(pnl, confidence_level)
 
 # Metrics
@@ -75,8 +83,9 @@ with col4:
     st.metric(label=f"Expected P&L ({time_horizon}d)", value=f"${expected_return:.2f}M")
 
 with col5:
-    drift_annual = 0.0 
-    st.metric(label="Annualized Drift", value=f"{drift_annual*100:.1f}%", delta="Assumed Mean Return")
+    with col5:
+    # Use the variable defined in the sidebar
+    st.metric(label="Annualized Drift", value=f"{annual_drift*100:.1f}%", delta="User-Defined Return")
 
 # Tabs
 tab1, tab2, tab3 = st.tabs(["📊 Portfolio", "📉 P&L Distribution", "🎯 VaR Analysis"])
