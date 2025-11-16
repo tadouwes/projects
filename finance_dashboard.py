@@ -84,7 +84,6 @@ with col4:
 
 with col5:
     with col5:
-    # Use the variable defined in the sidebar
     st.metric(label="Annualized Drift", value=f"{annual_drift*100:.1f}%", delta="User-Defined Return")
 
 # Tabs
