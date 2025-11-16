@@ -1,0 +1,7 @@
+# Ignore sensitive files and large media
+*.jpg
+*.jpeg
+*.png
+*.pdf
+*.html
+.DS_Store
