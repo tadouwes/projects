@@ -59,8 +59,6 @@ def calculate_risk_metrics(pnl, confidence):
 # Run simulation
 portfolio_df = generate_portfolio_data()
 volatility = 0.15
-# CHANGE THIS LINE to include the drift input:
-paths, pnl = run_monte_carlo(portfolio_value, volatility, num_simulations, time_horizon)
 # TO THIS:
 paths, pnl = run_monte_carlo(portfolio_value, volatility, num_simulations, time_horizon, annual_drift) 
 var, cvar = calculate_risk_metrics(pnl, confidence_level)
