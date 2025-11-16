@@ -59,7 +59,7 @@ var, cvar = calculate_risk_metrics(pnl, confidence_level)
 
 # Metrics
 st.subheader("Key Risk Metrics")
-col1, col2, col3, col4 = st.columns(5)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.metric(label=f"VaR ({confidence_level}%, {time_horizon}d)", value=f"${abs(var):.2f}M", delta=f"{(var/portfolio_value)*100:.2f}%", delta_color="inverse")
