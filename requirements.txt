@@ -1,2 +1,5 @@
 streamlit
 plotly
+pandas
+scipy
+Add pandas and scipy packages
